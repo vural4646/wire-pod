@@ -14,6 +14,7 @@ import (
 	"github.com/kercre123/chipper/pkg/wirepod/localization"
 	processreqs "github.com/kercre123/chipper/pkg/wirepod/preqs"
 	botsetup "github.com/kercre123/chipper/pkg/wirepod/setup"
+	wirepod_ttr "github.com/kercre123/chipper/pkg/wirepod/ttr"
 )
 
 var SttInitFunc func() error
@@ -286,6 +287,10 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Fprint(w, "error: "+err.Error())
 		}
+		fmt.Fprint(w, "done")
+		return
+	case r.URL.Path == "/api/grpc_test":
+		wirepod_ttr.TestConnection()
 		fmt.Fprint(w, "done")
 		return
 	}

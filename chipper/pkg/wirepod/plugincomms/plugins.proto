@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package plugins;
+
+option go_package = "github.com/kercre123/chipper/pkg/wirepod/plugincomms";
+
+message PluginRequest {
+  string intent = 1;
+  map<string, string> intent_params = 2;
+  string esn = 3;
+  string ip = 4;
+  string guid = 5;
+}
+
+message PluginResponse {
+  bool is_running = 1;
+  string intent = 2;
+  map<string, string> intent_params = 3;
+  bool is_knowledge_graph = 4;
+  string speech_output = 5;
+}
+
+service PluginService {
+  // Send a PluginRequest and get a PluginResponse
+  rpc ProcessPlugin(PluginRequest) returns (PluginResponse) {}
+}
