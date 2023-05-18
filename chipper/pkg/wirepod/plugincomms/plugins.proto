@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
 package plugins;
 
 option go_package = "github.com/kercre123/chipper/pkg/wirepod/plugincomms";
@@ -20,7 +21,41 @@ message PluginResponse {
   string speech_output = 5;
 }
 
+message ConnTestRequest {
+  bool test = 1;
+}
+
+message ConnTestResponse {
+  bool test = 1;
+}
+
+message AddPluginRequest {
+  uint32 id = 1;
+}
+
+message AddPluginResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message RemovePluginRequest {
+  uint32 id = 1;
+}
+
+message RemovePluginResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message ListPluginsResponse {
+  repeated uint32 ids = 1 [packed=true];
+}
+
 service PluginService {
   // Send a PluginRequest and get a PluginResponse
   rpc ProcessPlugin(PluginRequest) returns (PluginResponse) {}
+  rpc ConnTest(ConnTestRequest) returns (ConnTestResponse) {}
+  rpc AddPlugin(AddPluginRequest) returns (ConnTestResponse) {}
+  rpc RemovePlugin(RemovePluginRequest) returns (RemovePluginResponse) {}
+  rpc ListPlugins(google.protobuf.Empty) returns (ListPluginsResponse) {}
 }

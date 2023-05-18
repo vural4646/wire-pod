@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -24,6 +25,10 @@ const _ = grpc.SupportPackageIsVersion7
 type PluginServiceClient interface {
 	// Send a PluginRequest and get a PluginResponse
 	ProcessPlugin(ctx context.Context, in *PluginRequest, opts ...grpc.CallOption) (*PluginResponse, error)
+	ConnTest(ctx context.Context, in *ConnTestRequest, opts ...grpc.CallOption) (*ConnTestResponse, error)
+	AddPlugin(ctx context.Context, in *AddPluginRequest, opts ...grpc.CallOption) (*ConnTestResponse, error)
+	RemovePlugin(ctx context.Context, in *RemovePluginRequest, opts ...grpc.CallOption) (*RemovePluginResponse, error)
+	ListPlugins(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListPluginsResponse, error)
 }
 
 type pluginServiceClient struct {
@@ -43,12 +48,52 @@ func (c *pluginServiceClient) ProcessPlugin(ctx context.Context, in *PluginReque
 	return out, nil
 }
 
+func (c *pluginServiceClient) ConnTest(ctx context.Context, in *ConnTestRequest, opts ...grpc.CallOption) (*ConnTestResponse, error) {
+	out := new(ConnTestResponse)
+	err := c.cc.Invoke(ctx, "/plugins.PluginService/ConnTest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pluginServiceClient) AddPlugin(ctx context.Context, in *AddPluginRequest, opts ...grpc.CallOption) (*ConnTestResponse, error) {
+	out := new(ConnTestResponse)
+	err := c.cc.Invoke(ctx, "/plugins.PluginService/AddPlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pluginServiceClient) RemovePlugin(ctx context.Context, in *RemovePluginRequest, opts ...grpc.CallOption) (*RemovePluginResponse, error) {
+	out := new(RemovePluginResponse)
+	err := c.cc.Invoke(ctx, "/plugins.PluginService/RemovePlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pluginServiceClient) ListPlugins(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListPluginsResponse, error) {
+	out := new(ListPluginsResponse)
+	err := c.cc.Invoke(ctx, "/plugins.PluginService/ListPlugins", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PluginServiceServer is the server API for PluginService service.
 // All implementations must embed UnimplementedPluginServiceServer
 // for forward compatibility
 type PluginServiceServer interface {
 	// Send a PluginRequest and get a PluginResponse
 	ProcessPlugin(context.Context, *PluginRequest) (*PluginResponse, error)
+	ConnTest(context.Context, *ConnTestRequest) (*ConnTestResponse, error)
+	AddPlugin(context.Context, *AddPluginRequest) (*ConnTestResponse, error)
+	RemovePlugin(context.Context, *RemovePluginRequest) (*RemovePluginResponse, error)
+	ListPlugins(context.Context, *emptypb.Empty) (*ListPluginsResponse, error)
 	mustEmbedUnimplementedPluginServiceServer()
 }
 
@@ -58,6 +103,18 @@ type UnimplementedPluginServiceServer struct {
 
 func (UnimplementedPluginServiceServer) ProcessPlugin(context.Context, *PluginRequest) (*PluginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProcessPlugin not implemented")
+}
+func (UnimplementedPluginServiceServer) ConnTest(context.Context, *ConnTestRequest) (*ConnTestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConnTest not implemented")
+}
+func (UnimplementedPluginServiceServer) AddPlugin(context.Context, *AddPluginRequest) (*ConnTestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddPlugin not implemented")
+}
+func (UnimplementedPluginServiceServer) RemovePlugin(context.Context, *RemovePluginRequest) (*RemovePluginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemovePlugin not implemented")
+}
+func (UnimplementedPluginServiceServer) ListPlugins(context.Context, *emptypb.Empty) (*ListPluginsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPlugins not implemented")
 }
 func (UnimplementedPluginServiceServer) mustEmbedUnimplementedPluginServiceServer() {}
 
@@ -90,6 +147,78 @@ func _PluginService_ProcessPlugin_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PluginService_ConnTest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConnTestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginServiceServer).ConnTest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/plugins.PluginService/ConnTest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginServiceServer).ConnTest(ctx, req.(*ConnTestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PluginService_AddPlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddPluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginServiceServer).AddPlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/plugins.PluginService/AddPlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginServiceServer).AddPlugin(ctx, req.(*AddPluginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PluginService_RemovePlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemovePluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginServiceServer).RemovePlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/plugins.PluginService/RemovePlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginServiceServer).RemovePlugin(ctx, req.(*RemovePluginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PluginService_ListPlugins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginServiceServer).ListPlugins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/plugins.PluginService/ListPlugins",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginServiceServer).ListPlugins(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PluginService_ServiceDesc is the grpc.ServiceDesc for PluginService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -100,6 +229,22 @@ var PluginService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ProcessPlugin",
 			Handler:    _PluginService_ProcessPlugin_Handler,
+		},
+		{
+			MethodName: "ConnTest",
+			Handler:    _PluginService_ConnTest_Handler,
+		},
+		{
+			MethodName: "AddPlugin",
+			Handler:    _PluginService_AddPlugin_Handler,
+		},
+		{
+			MethodName: "RemovePlugin",
+			Handler:    _PluginService_RemovePlugin_Handler,
+		},
+		{
+			MethodName: "ListPlugins",
+			Handler:    _PluginService_ListPlugins_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
